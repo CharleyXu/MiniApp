@@ -1,0 +1,12 @@
+server:
+    port: 8443
+wx:
+    miniapp:
+        config:
+            appid: yourAppId
+            secret: yourSecret
+            token: yourToken
+            aesKey: yourAesKey
+            msgDataFormat: JSON
+swagger:
+    enable: true
