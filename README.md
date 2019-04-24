@@ -8,8 +8,11 @@
 
 [【第三方微信SDK】](https://github.com/Wechat-Group/WxJava)
 
-不是特别好用
+[【微信小程序Java后端Demo】](https://github.com/binarywang/weixin-java-miniapp-demo)
 
-[答题前端代码](https://github.com/350306878/Kuai-Shua-Questions)
+[【答题小程序前端代码】](https://github.com/350306878/Kuai-Shua-Questions)
 
-前端代码借鉴
+### 打包
+
+mvn clean package -P dev -Dmaven.test.skip=true
+

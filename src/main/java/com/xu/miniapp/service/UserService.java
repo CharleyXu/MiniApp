@@ -5,7 +5,6 @@ import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import com.xu.miniapp.util.JacksonUtil;
-import com.xu.miniapp.vo.LoginInfo;
 import com.xu.miniapp.vo.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class AppService {
+public class UserService {
 
     @Autowired
     private WxMaService wxMaService;
@@ -26,12 +25,12 @@ public class AppService {
     /**
      * 登陆接口
      */
-    public String login(LoginInfo loginInfo) throws WxErrorException {
-        if (StringUtils.isBlank(loginInfo.getCode())) {
+    public String login(String code) throws WxErrorException {
+        if (StringUtils.isBlank(code)) {
             return "empty jsCode";
         }
         WxMaJscode2SessionResult session = wxMaService.getUserService()
-            .getSessionInfo(loginInfo.getCode());
+            .getSessionInfo(code);
         log.info(session.getSessionKey());
         log.info(session.getOpenid());
         return JacksonUtil.obj2json(session);

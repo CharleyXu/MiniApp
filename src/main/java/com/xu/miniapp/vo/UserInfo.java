@@ -10,7 +10,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserInfo {
 
-    private String appId;
     private String sessionKey;
     private String signature;
     private String rawData;

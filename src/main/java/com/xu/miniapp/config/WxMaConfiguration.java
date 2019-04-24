@@ -9,18 +9,12 @@ import cn.binarywang.wx.miniapp.config.WxMaInMemoryConfig;
 import cn.binarywang.wx.miniapp.message.WxMaMessageHandler;
 import cn.binarywang.wx.miniapp.message.WxMaMessageRouter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,14 +25,6 @@ public class WxMaConfiguration {
     @Autowired
     private WxMaProperties properties;
 
-    @PostConstruct
-    public void init() {
-        WxMaInMemoryConfig config = new WxMaInMemoryConfig();
-        BeanUtils.copyProperties(properties, config);
-        WxMaService service = new WxMaServiceImpl();
-        service.setWxMaConfig(config);
-    }
-
     @Bean
     public WxMaService getMaService() {
         WxMaService service = new WxMaServiceImpl();
@@ -48,8 +34,9 @@ public class WxMaConfiguration {
         return service;
     }
 
-    private WxMaMessageRouter newRouter(WxMaService service) {
-        final WxMaMessageRouter router = new WxMaMessageRouter(service);
+    @Bean
+    public WxMaMessageRouter getRouter(WxMaService service) {
+        WxMaMessageRouter router = new WxMaMessageRouter(service);
         router
             .rule().handler(logHandler).next()
             .rule().async(false).content("模板").handler(templateMsgHandler).end()
@@ -59,10 +46,11 @@ public class WxMaConfiguration {
         return router;
     }
 
+
     private WxMaMessageHandler templateMsgHandler = (wxMessage, context, service, sessionManager) ->
         service.getMsgService().sendTemplateMsg(WxMaTemplateMessage.builder()
-            .templateId("此处更换为自己的模板id")
-            .formId("自己替换可用的formid")
+            .templateId("模板id")
+            .formId("formId")
             .data(Lists.newArrayList(
                 new WxMaTemplateData("keyword1", "339208499", "#173177")))
             .toUser(wxMessage.getFromUser())
